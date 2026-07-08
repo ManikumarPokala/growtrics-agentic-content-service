@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.pytest_cache/
+growtrics.db
+growtrics.db-shm
+growtrics.db-wal

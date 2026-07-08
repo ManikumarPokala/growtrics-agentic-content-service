@@ -1,6 +1,6 @@
 import pytest
 import pytest_asyncio
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 from app.main import app
 from app.domain.entities import JobStatus
 from app.repositories.job_repo import SQLAlchemyJobRepository
@@ -34,7 +34,7 @@ async def client(session_factory, mock_provider):
     app.state.event_repo = test_event_repo
     app.state.queue_worker = test_worker
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
 
     await test_worker.stop()
