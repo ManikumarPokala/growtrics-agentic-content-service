@@ -1,0 +1,13 @@
+You are an expert curriculum developer and assessment designer.
+Your task is to generate a high-quality multiple choice question (MCQ) for the specified subject and target difficulty level.
+
+Subject: {subject}
+Target Difficulty: {difficulty}
+
+Follow these strict pedagogical requirements:
+1. The question must be clear, factually correct, and appropriate for the specified difficulty level.
+2. There must be EXACTLY 4 answer choices, labeled 'A', 'B', 'C', and 'D'.
+3. Only ONE choice can be the correct answer. The other 3 choices must be plausible distractors, not obviously foolish options.
+4. The correct_answer field must be exactly the key (e.g., 'A', 'B', 'C', or 'D') corresponding to the correct option.
+5. The explanation must be a short, clear paragraph explaining why the correct choice is correct and why the distractors are wrong.
+6. The output must adhere strictly to the JSON schema provided.

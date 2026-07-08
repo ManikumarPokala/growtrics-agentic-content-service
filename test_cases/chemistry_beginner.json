@@ -1,0 +1,99 @@
+{
+  "job": {
+    "id": "e0e84d4b-70c8-472e-8ab8-109ef7e67f01",
+    "subject": "Secondary school chemistry",
+    "difficulty": "Beginner",
+    "items_requested": 5,
+    "status": "COMPLETED",
+    "total_cost": 0.00165,
+    "created_at": "2026-07-09 00:40:00",
+    "completed_at": "2026-07-09 00:40:15"
+  },
+  "metrics": {
+    "total_duration_seconds": 15.2,
+    "total_cost_usd": 0.00165,
+    "average_cost_per_item_usd": 0.00033,
+    "pass_rate_percentage": 100.0,
+    "repair_rate_percentage": 20.0,
+    "total_llm_calls": 11,
+    "p50_latency_seconds": 1.25,
+    "p95_latency_seconds": 2.1
+  },
+  "items": [
+    {
+      "id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+      "question": "What is the chemical symbol for Gold?",
+      "choices": {
+        "A": "Au",
+        "B": "Ag",
+        "C": "Fe",
+        "D": "Cu"
+      },
+      "correct_answer": "A",
+      "explanation": "Au is derived from the Latin word aurum, which means Gold. Ag is for silver, Fe is for iron, and Cu is for copper.",
+      "cost": 0.00028,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e",
+      "question": "Which state of matter has a definite volume but no definite shape?",
+      "choices": {
+        "A": "Solid",
+        "B": "Liquid",
+        "C": "Gas",
+        "D": "Plasma"
+      },
+      "correct_answer": "B",
+      "explanation": "Liquids have a definite volume because their particles are close together, but no definite shape because particles can flow past one another.",
+      "cost": 0.00029,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "c3d4e5f6-a7b8-9c0d-1e2f-3a4b5c6d7e8f",
+      "question": "What is the pH value of pure water at room temperature?",
+      "choices": {
+        "A": "1",
+        "B": "5",
+        "C": "7",
+        "D": "14"
+      },
+      "correct_answer": "C",
+      "explanation": "Pure water is neutral and has a pH of 7 at room temperature (25 degrees Celsius). Lower is acidic, higher is basic.",
+      "cost": 0.0003,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "d4e5f6a7-b8c9-0d1e-2f3a-4b5c6d7e8f9a",
+      "question": "Which of the following is a physical change rather than a chemical change?",
+      "choices": {
+        "A": "Burning wood",
+        "B": "Rusting of iron",
+        "C": "Melting of ice",
+        "D": "Souring of milk"
+      },
+      "correct_answer": "C",
+      "explanation": "Melting of ice is a physical change because it is a change of state (solid water to liquid water) without altering the chemical structure. The others are chemical changes.",
+      "cost": 0.00048,
+      "status": "VALIDATED",
+      "attempts": 2
+    },
+    {
+      "id": "e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b",
+      "question": "What is the most abundant gas in Earth's atmosphere?",
+      "choices": {
+        "A": "Oxygen",
+        "B": "Carbon dioxide",
+        "C": "Nitrogen",
+        "D": "Hydrogen"
+      },
+      "correct_answer": "C",
+      "explanation": "Nitrogen is the most abundant gas in the atmosphere, making up approximately 78% of dry air. Oxygen makes up about 21%.",
+      "cost": 0.0003,
+      "status": "VALIDATED",
+      "attempts": 1
+    }
+  ]
+}
