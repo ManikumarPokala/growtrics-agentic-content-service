@@ -7,11 +7,15 @@ from app.core.exceptions import JSONParseError
 from app.providers.llm.base import BaseLLMProvider
 
 class OpenAIProvider(BaseLLMProvider):
-    def __init__(self, model_name: str = None, api_key: str = None):
+    def __init__(self, model_name: str = None, api_key: str = None, base_url: str = None):
         model = model_name or settings.DEFAULT_MODEL
         super().__init__(model)
         key = api_key or settings.OPENAI_API_KEY
-        self.client = AsyncOpenAI(api_key=key) if key else None
+        url = base_url or settings.OPENAI_BASE_URL
+        kwargs = {"api_key": key}
+        if url:
+            kwargs["base_url"] = url
+        self.client = AsyncOpenAI(**kwargs) if key else None
 
     async def generate_structured_output(
         self, 

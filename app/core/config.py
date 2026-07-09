@@ -10,6 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 class Settings:
     # API Keys
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL", "")
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
 

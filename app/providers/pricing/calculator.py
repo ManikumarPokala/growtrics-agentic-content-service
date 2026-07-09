@@ -18,6 +18,14 @@ PRICING_MAP = {
     "claude-3-5-sonnet": {
         "input_cost_per_token": 3.00 / 1_000_000,
         "output_cost_per_token": 15.00 / 1_000_000
+    },
+    "deepseek-chat": {
+        "input_cost_per_token": 0.14 / 1_000_000,
+        "output_cost_per_token": 0.28 / 1_000_000
+    },
+    "deepseek-reasoner": {
+        "input_cost_per_token": 0.55 / 1_000_000,
+        "output_cost_per_token": 2.19 / 1_000_000
     }
 }
 
