@@ -121,6 +121,287 @@ class PipelineOrchestrator:
 
         return True, "Rules passed"
 
+    async def _generate_draft(
+        self, 
+        job_id: str, 
+        subject: str, 
+        difficulty: str, 
+        generator_template: str
+    ) -> Tuple[Dict[str, Any], QuestionItem]:
+        """Generates a single draft MCQ sequentially and inserts it into the database."""
+        # 1. Fetch already generated items to construct blacklist
+        existing_items = await self.item_repo.get_items_by_job_id(job_id)
+        existing_questions = [it["question"] for it in existing_items]
+        
+        # 2. Format generator prompts
+        gen_sys = generator_template.format(subject=subject, difficulty=difficulty)
+        
+        if existing_questions:
+            questions_list_str = "\n".join(f"- {q}" for q in existing_questions)
+            gen_usr = (
+                f"Generate 1 MCQ about {subject} at {difficulty} level.\n\n"
+                f"CRITICAL: Do NOT duplicate, overlap with, or generate similar questions to the following list "
+                f"of already generated items:\n{questions_list_str}"
+            )
+        else:
+            gen_usr = f"Generate 1 MCQ about {subject} at {difficulty} level."
+            
+        gen_start = time.time()
+        try:
+            generated_mcq, gen_meta = await self._call_llm_with_fallback(
+                gen_sys, gen_usr, QuestionItem
+            )
+            gen_duration = int((time.time() - gen_start) * 1000)
+            await self.event_repo.log_event(
+                job_id=job_id,
+                stage=StageType.GENERATION.value,
+                status=EventStatus.SUCCESS.value,
+                duration_ms=gen_duration,
+                input_tokens=gen_meta["input_tokens"],
+                output_tokens=gen_meta["output_tokens"],
+                cost=gen_meta["cost"],
+                model=gen_meta["model"]
+            )
+        except Exception as e:
+            gen_duration = int((time.time() - gen_start) * 1000)
+            await self.event_repo.log_event(
+                job_id=job_id,
+                stage=StageType.GENERATION.value,
+                status=EventStatus.FAILURE.value,
+                duration_ms=gen_duration,
+                input_tokens=0,
+                output_tokens=0,
+                cost=0.0,
+                model="unknown",
+                error_message=str(e)
+            )
+            raise e
+
+        # Create record in DB as GENERATING with initial generation cost
+        item_record = await self.item_repo.create(
+            job_id=job_id,
+            question=generated_mcq.question,
+            choices=generated_mcq.choices,
+            correct_answer=generated_mcq.correct_answer,
+            explanation=generated_mcq.explanation,
+            cost=gen_meta["cost"],
+            status=ItemStatus.GENERATING,
+            attempts=1
+        )
+        return item_record, generated_mcq
+
+    async def _validate_and_repair_item(
+        self,
+        job_id: str,
+        item_id: str,
+        question_item: QuestionItem,
+        subject: str,
+        difficulty: str,
+        judge_template: str,
+        repair_template: str
+    ) -> float:
+        """Runs validation and repair loops for a single item. Returns total cost of this stage."""
+        generated_mcq = question_item
+        attempts = 1
+        item_status = ItemStatus.VALIDATING
+        val_cost = 0.0
+        
+        # 1. Validation Stage (Static Rules + LLM Judge)
+        rule_pass, rule_feedback = self._perform_rule_validation(generated_mcq)
+        
+        judge_rubric = None
+        val_meta = {"cost": 0.0, "input_tokens": 0, "output_tokens": 0, "model": settings.JUDGE_MODEL}
+        
+        if rule_pass:
+            judge_sys = judge_template.format(
+                subject=subject,
+                difficulty=difficulty,
+                question=generated_mcq.question,
+                choices=str(generated_mcq.choices),
+                correct_answer=generated_mcq.correct_answer,
+                explanation=generated_mcq.explanation
+            )
+            judge_usr = "Evaluate the generated MCQ question."
+            
+            val_start = time.time()
+            try:
+                judge_rubric, val_meta = await self._call_llm_with_fallback(
+                    judge_sys, judge_usr, JudgeRubric
+                )
+                val_duration = int((time.time() - val_start) * 1000)
+                await self.event_repo.log_event(
+                    job_id=job_id,
+                    stage=StageType.VALIDATION.value,
+                    status=EventStatus.SUCCESS.value,
+                    duration_ms=val_duration,
+                    input_tokens=val_meta["input_tokens"],
+                    output_tokens=val_meta["output_tokens"],
+                    cost=val_meta["cost"],
+                    model=val_meta["model"]
+                )
+                val_cost += val_meta["cost"]
+            except Exception as e:
+                val_duration = int((time.time() - val_start) * 1000)
+                await self.event_repo.log_event(
+                    job_id=job_id,
+                    stage=StageType.VALIDATION.value,
+                    status=EventStatus.FAILURE.value,
+                    duration_ms=val_duration,
+                    input_tokens=0,
+                    output_tokens=0,
+                    cost=0.0,
+                    model="unknown",
+                    error_message=str(e)
+                )
+                raise e
+        else:
+            judge_rubric = JudgeRubric(
+                schema_valid=False,
+                difficulty_alignment=0.0,
+                factuality_score=0.0,
+                clarity_score=0.0,
+                explanation_alignment=False,
+                overall_passed=False,
+                feedback=rule_feedback
+            )
+            
+        # Update database with validation results (status set to VALIDATED or REPAIRING)
+        item_status = ItemStatus.VALIDATED if judge_rubric.overall_passed else ItemStatus.REPAIRING
+        # We increment cost of validation
+        await self.item_repo.update_status_and_attempts(
+            item_id=item_id,
+            status=item_status,
+            attempts=attempts,
+            cost_increment=val_meta["cost"]
+        )
+        
+        # 2. Repair Agent Stage (if validation failed)
+        while item_status == ItemStatus.REPAIRING and attempts <= settings.MAX_REPAIR_ATTEMPTS:
+            await self.job_repo.update_heartbeat(job_id)
+            attempts += 1
+            
+            repair_sys = repair_template.format(
+                subject=subject,
+                difficulty=difficulty,
+                question=generated_mcq.question,
+                choices=str(generated_mcq.choices),
+                correct_answer=generated_mcq.correct_answer,
+                explanation=generated_mcq.explanation,
+                feedback=judge_rubric.feedback
+            )
+            repair_usr = "Correct the question according to auditor feedback."
+            
+            rep_start = time.time()
+            try:
+                repaired_mcq, rep_meta = await self._call_llm_with_fallback(
+                    repair_sys, repair_usr, QuestionItem
+                )
+                rep_duration = int((time.time() - rep_start) * 1000)
+                await self.event_repo.log_event(
+                    job_id=job_id,
+                    stage=StageType.REPAIR.value,
+                    status=EventStatus.SUCCESS.value,
+                    duration_ms=rep_duration,
+                    input_tokens=rep_meta["input_tokens"],
+                    output_tokens=rep_meta["output_tokens"],
+                    cost=rep_meta["cost"],
+                    model=rep_meta["model"]
+                )
+                val_cost += rep_meta["cost"]
+                
+                # Update item content for this repair attempt
+                await self.item_repo.update_item_content(
+                    item_id=item_id,
+                    question=repaired_mcq.question,
+                    choices=repaired_mcq.choices,
+                    correct_answer=repaired_mcq.correct_answer,
+                    explanation=repaired_mcq.explanation,
+                    status=ItemStatus.VALIDATING,
+                    attempts=attempts,
+                    cost_increment=rep_meta["cost"]
+                )
+                
+                # Re-run validation on repaired item
+                rule_pass, rule_feedback = self._perform_rule_validation(repaired_mcq)
+                if rule_pass:
+                    judge_sys = judge_template.format(
+                        subject=subject,
+                        difficulty=difficulty,
+                        question=repaired_mcq.question,
+                        choices=str(repaired_mcq.choices),
+                        correct_answer=repaired_mcq.correct_answer,
+                        explanation=repaired_mcq.explanation
+                    )
+                    val_start = time.time()
+                    judge_rubric, val_meta = await self._call_llm_with_fallback(
+                        judge_sys, judge_usr, JudgeRubric
+                    )
+                    val_duration = int((time.time() - val_start) * 1000)
+                    await self.event_repo.log_event(
+                        job_id=job_id,
+                        stage=StageType.VALIDATION.value,
+                        status=EventStatus.SUCCESS.value,
+                        duration_ms=val_duration,
+                        input_tokens=val_meta["input_tokens"],
+                        output_tokens=val_meta["output_tokens"],
+                        cost=val_meta["cost"],
+                        model=val_meta["model"]
+                    )
+                    val_cost += val_meta["cost"]
+                    await self.item_repo.update_status_and_attempts(
+                        item_id=item_id,
+                        status=ItemStatus.VALIDATING,
+                        attempts=attempts,
+                        cost_increment=val_meta["cost"]
+                    )
+                else:
+                    judge_rubric = JudgeRubric(
+                        schema_valid=False,
+                        difficulty_alignment=0.0,
+                        factuality_score=0.0,
+                        clarity_score=0.0,
+                        explanation_alignment=False,
+                        overall_passed=False,
+                        feedback=rule_feedback
+                    )
+                    
+                if judge_rubric.overall_passed:
+                    item_status = ItemStatus.VALIDATED
+                else:
+                    item_status = ItemStatus.REPAIRING
+                    
+                generated_mcq = repaired_mcq
+                
+            except Exception as e:
+                rep_duration = int((time.time() - rep_start) * 1000)
+                await self.event_repo.log_event(
+                    job_id=job_id,
+                    stage=StageType.REPAIR.value,
+                    status=EventStatus.FAILURE.value,
+                    duration_ms=rep_duration,
+                    input_tokens=0,
+                    output_tokens=0,
+                    cost=0.0,
+                    model="unknown",
+                    error_message=str(e)
+                )
+                raise e
+
+        # Final check if item passed or needs review
+        if item_status == ItemStatus.VALIDATED:
+            await self.item_repo.update_status_and_attempts(
+                item_id=item_id,
+                status=ItemStatus.VALIDATED,
+                attempts=attempts
+            )
+        else:
+            await self.item_repo.update_status_and_attempts(
+                item_id=item_id,
+                status=ItemStatus.REQUIRES_REVIEW,
+                attempts=attempts
+            )
+        return val_cost
+
     async def execute_job(self, job_id: str) -> None:
         """Runs the generation job through the multi-agent queue."""
         job = await self.job_repo.get_by_id(job_id)
@@ -147,254 +428,39 @@ class PipelineOrchestrator:
         start_time = time.time()
 
         try:
+            # 1. Draft Stage: Generate items needed sequentially (preventing duplicates)
+            drafts = []
             for i in range(items_needed):
-                # Update job heartbeat after starting a new item cycle
                 await self.job_repo.update_heartbeat(job_id)
-                
-                # 1. Generation Stage
-                gen_sys = generator_template.format(subject=subject, difficulty=difficulty)
-                gen_usr = f"Generate 1 MCQ about {subject} at {difficulty} level."
-                
-                gen_start = time.time()
-                try:
-                    generated_mcq, gen_meta = await self._call_llm_with_fallback(
-                        gen_sys, gen_usr, QuestionItem
-                    )
-                    gen_duration = int((time.time() - gen_start) * 1000)
-                    await self.event_repo.log_event(
-                        job_id=job_id,
-                        stage=StageType.GENERATION.value,
-                        status=EventStatus.SUCCESS.value,
-                        duration_ms=gen_duration,
-                        input_tokens=gen_meta["input_tokens"],
-                        output_tokens=gen_meta["output_tokens"],
-                        cost=gen_meta["cost"],
-                        model=gen_meta["model"]
-                    )
-                except Exception as e:
-                    gen_duration = int((time.time() - gen_start) * 1000)
-                    await self.event_repo.log_event(
-                        job_id=job_id,
-                        stage=StageType.GENERATION.value,
-                        status=EventStatus.FAILURE.value,
-                        duration_ms=gen_duration,
-                        input_tokens=0,
-                        output_tokens=0,
-                        cost=0.0,
-                        model="unknown",
-                        error_message=str(e)
-                    )
-                    raise e
-
-                # 2. Validation Stage (Static Rules + LLM Judge)
-                rule_pass, rule_feedback = self._perform_rule_validation(generated_mcq)
-                
-                judge_rubric = None
-                val_meta = {"cost": 0.0, "input_tokens": 0, "output_tokens": 0, "model": settings.JUDGE_MODEL}
-                
-                if rule_pass:
-                    # Run LLM Judge
-                    judge_sys = judge_template.format(
-                        subject=subject,
-                        difficulty=difficulty,
-                        question=generated_mcq.question,
-                        choices=str(generated_mcq.choices),
-                        correct_answer=generated_mcq.correct_answer,
-                        explanation=generated_mcq.explanation
-                    )
-                    judge_usr = "Evaluate the generated MCQ question."
-                    
-                    val_start = time.time()
-                    try:
-                        judge_rubric, val_meta = await self._call_llm_with_fallback(
-                            judge_sys, judge_usr, JudgeRubric
-                        )
-                        val_duration = int((time.time() - val_start) * 1000)
-                        await self.event_repo.log_event(
-                            job_id=job_id,
-                            stage=StageType.VALIDATION.value,
-                            status=EventStatus.SUCCESS.value,
-                            duration_ms=val_duration,
-                            input_tokens=val_meta["input_tokens"],
-                            output_tokens=val_meta["output_tokens"],
-                            cost=val_meta["cost"],
-                            model=val_meta["model"]
-                        )
-                    except Exception as e:
-                        val_duration = int((time.time() - val_start) * 1000)
-                        await self.event_repo.log_event(
-                            job_id=job_id,
-                            stage=StageType.VALIDATION.value,
-                            status=EventStatus.FAILURE.value,
-                            duration_ms=val_duration,
-                            input_tokens=0,
-                            output_tokens=0,
-                            cost=0.0,
-                            model="unknown",
-                            error_message=str(e)
-                        )
-                        raise e
-                else:
-                    # Construct mock failed rubric for rule failure
-                    judge_rubric = JudgeRubric(
-                        schema_valid=False,
-                        difficulty_alignment=0.0,
-                        factuality_score=0.0,
-                        clarity_score=0.0,
-                        explanation_alignment=False,
-                        overall_passed=False,
-                        feedback=rule_feedback
-                    )
-
-                # Persist the item in database (State: VALIDATING if passed, else REPAIRING)
-                initial_cost = gen_meta["cost"] + val_meta["cost"]
-                total_cost += initial_cost
-                
-                item_status = ItemStatus.VALIDATED if judge_rubric.overall_passed else ItemStatus.REPAIRING
-                
-                item_record = await self.item_repo.create(
+                draft_record, draft_mcq = await self._generate_draft(
                     job_id=job_id,
-                    question=generated_mcq.question,
-                    choices=generated_mcq.choices,
-                    correct_answer=generated_mcq.correct_answer,
-                    explanation=generated_mcq.explanation,
-                    cost=initial_cost,
-                    status=item_status,
-                    attempts=1
+                    subject=subject,
+                    difficulty=difficulty,
+                    generator_template=generator_template
                 )
+                drafts.append((draft_record, draft_mcq))
+                total_cost += draft_record["cost"]
+
+            # 2. Validation & Repair Stage: Process validation/repair concurrently
+            if drafts:
+                tasks = []
+                for draft_record, draft_mcq in drafts:
+                    tasks.append(
+                        self._validate_and_repair_item(
+                            job_id=job_id,
+                            item_id=draft_record["id"],
+                            question_item=draft_mcq,
+                            subject=subject,
+                            difficulty=difficulty,
+                            judge_template=judge_template,
+                            repair_template=repair_template
+                        )
+                    )
                 
-                item_id = item_record["id"]
-                attempts = 1
+                # Gather concurrent costs and add to total
+                val_costs = await asyncio.gather(*tasks)
+                total_cost += sum(val_costs)
 
-                # 3. Repair Agent Stage (if validation failed)
-                while item_status == ItemStatus.REPAIRING and attempts <= settings.MAX_REPAIR_ATTEMPTS:
-                    await self.job_repo.update_heartbeat(job_id)
-                    attempts += 1
-                    
-                    repair_sys = repair_template.format(
-                        subject=subject,
-                        difficulty=difficulty,
-                        question=generated_mcq.question,
-                        choices=str(generated_mcq.choices),
-                        correct_answer=generated_mcq.correct_answer,
-                        explanation=generated_mcq.explanation,
-                        feedback=judge_rubric.feedback
-                    )
-                    repair_usr = "Correct the question according to auditor feedback."
-                    
-                    rep_start = time.time()
-                    try:
-                        repaired_mcq, rep_meta = await self._call_llm_with_fallback(
-                            repair_sys, repair_usr, QuestionItem
-                        )
-                        rep_duration = int((time.time() - rep_start) * 1000)
-                        await self.event_repo.log_event(
-                            job_id=job_id,
-                            stage=StageType.REPAIR.value,
-                            status=EventStatus.SUCCESS.value,
-                            duration_ms=rep_duration,
-                            input_tokens=rep_meta["input_tokens"],
-                            output_tokens=rep_meta["output_tokens"],
-                            cost=rep_meta["cost"],
-                            model=rep_meta["model"]
-                        )
-                        
-                        total_cost += rep_meta["cost"]
-                        # Update item database content to reflect repair attempt
-                        await self.item_repo.update_item_content(
-                            item_id=item_id,
-                            question=repaired_mcq.question,
-                            choices=repaired_mcq.choices,
-                            correct_answer=repaired_mcq.correct_answer,
-                            explanation=repaired_mcq.explanation,
-                            status=ItemStatus.VALIDATING,
-                            attempts=attempts,
-                            cost_increment=rep_meta["cost"]
-                        )
-                        
-                        # Re-run Quality validation on repaired item
-                        rule_pass, rule_feedback = self._perform_rule_validation(repaired_mcq)
-                        if rule_pass:
-                            judge_sys = judge_template.format(
-                                subject=subject,
-                                difficulty=difficulty,
-                                question=repaired_mcq.question,
-                                choices=str(repaired_mcq.choices),
-                                correct_answer=repaired_mcq.correct_answer,
-                                explanation=repaired_mcq.explanation
-                            )
-                            val_start = time.time()
-                            judge_rubric, val_meta = await self._call_llm_with_fallback(
-                                judge_sys, judge_usr, JudgeRubric
-                            )
-                            val_duration = int((time.time() - val_start) * 1000)
-                            await self.event_repo.log_event(
-                                job_id=job_id,
-                                stage=StageType.VALIDATION.value,
-                                status=EventStatus.SUCCESS.value,
-                                duration_ms=val_duration,
-                                input_tokens=val_meta["input_tokens"],
-                                output_tokens=val_meta["output_tokens"],
-                                cost=val_meta["cost"],
-                                model=val_meta["model"]
-                            )
-                            total_cost += val_meta["cost"]
-                            await self.item_repo.update_status_and_attempts(
-                                item_id=item_id,
-                                status=ItemStatus.VALIDATING,
-                                attempts=attempts,
-                                cost_increment=val_meta["cost"]
-                            )
-                        else:
-                            judge_rubric = JudgeRubric(
-                                schema_valid=False,
-                                difficulty_alignment=0.0,
-                                factuality_score=0.0,
-                                clarity_score=0.0,
-                                explanation_alignment=False,
-                                overall_passed=False,
-                                feedback=rule_feedback
-                            )
-                        
-                        # Update status based on re-evaluation
-                        if judge_rubric.overall_passed:
-                            item_status = ItemStatus.VALIDATED
-                        else:
-                            item_status = ItemStatus.REPAIRING
-                            
-                        # Save latest generated for subsequent iterations
-                        generated_mcq = repaired_mcq
-                        
-                    except Exception as e:
-                        rep_duration = int((time.time() - rep_start) * 1000)
-                        await self.event_repo.log_event(
-                            job_id=job_id,
-                            stage=StageType.REPAIR.value,
-                            status=EventStatus.FAILURE.value,
-                            duration_ms=rep_duration,
-                            input_tokens=0,
-                            output_tokens=0,
-                            cost=0.0,
-                            model="unknown",
-                            error_message=str(e)
-                        )
-                        raise e
-
-                # Check if item finally passed or requires review
-                if item_status == ItemStatus.VALIDATED:
-                    await self.item_repo.update_status_and_attempts(
-                        item_id=item_id,
-                        status=ItemStatus.VALIDATED,
-                        attempts=attempts
-                    )
-                else:
-                    # Bounded retries exhausted -> Move to REQUIRES_REVIEW (HITL state)
-                    await self.item_repo.update_status_and_attempts(
-                        item_id=item_id,
-                        status=ItemStatus.REQUIRES_REVIEW,
-                        attempts=attempts
-                    )
-            
             # Job finished successfully
             await self.job_repo.update_status(job_id, JobStatus.COMPLETED)
             

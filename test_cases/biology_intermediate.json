@@ -1,97 +1,97 @@
 {
   "job": {
-    "id": "b03ab20e-ca27-421d-a845-df1884c579e6",
+    "id": "1c695e2c-9767-4d0b-b703-26b4cec5b8ca",
     "subject": "Secondary school biology",
     "difficulty": "Intermediate",
     "items_requested": 5,
     "status": "COMPLETED",
-    "total_cost": 0.00090342,
-    "created_at": "2026-07-09 06:13:19.446986",
-    "completed_at": "2026-07-09 06:13:35.148735"
+    "total_cost": 0.0004,
+    "created_at": "2026-07-09 06:47:34.421738",
+    "completed_at": "2026-07-09 06:47:34.451763"
   },
   "metrics": {
-    "total_duration_seconds": 15.7,
-    "total_cost_usd": 0.000903,
-    "average_cost_per_item_usd": 0.000181,
+    "total_duration_seconds": 0.03,
+    "total_cost_usd": 0.0004,
+    "average_cost_per_item_usd": 8e-05,
     "pass_rate_percentage": 100.0,
     "repair_rate_percentage": 0.0,
     "total_llm_calls": 10,
-    "p50_latency_seconds": 1.58,
-    "p95_latency_seconds": 1.76
+    "p50_latency_seconds": 0.0,
+    "p95_latency_seconds": 0.0
   },
   "items": [
     {
-      "id": "0d0809a0-efa4-4a6f-9057-5f14738cab4e",
-      "question": "Which of the following processes occurs in the mitochondria?",
+      "id": "77d03b0b-56a4-47bc-bf68-76dbe3164955",
+      "question": "Which organelle is primarily responsible for cellular respiration?",
       "choices": {
-        "A": "Photosynthesis",
-        "B": "Protein synthesis",
-        "C": "Cellular respiration",
-        "D": "Lipid synthesis"
+        "A": "Chloroplast",
+        "B": "Mitochondrion",
+        "C": "Ribosome",
+        "D": "Lysosome"
+      },
+      "correct_answer": "B",
+      "explanation": "Mitochondria generate ATP through cellular respiration.",
+      "cost": 8e-05,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "0da7b9c8-c6d8-47e3-bb42-73f0a9043d3a",
+      "question": "What is the primary function of stomata in plant leaves?",
+      "choices": {
+        "A": "Water absorption",
+        "B": "Gas exchange",
+        "C": "Photosynthesis",
+        "D": "Nutrient transport"
+      },
+      "correct_answer": "B",
+      "explanation": "Stomata allow carbon dioxide to enter and oxygen and water vapor to exit.",
+      "cost": 8e-05,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "666f671b-1959-414b-af59-5f3057f5dbfe",
+      "question": "Which molecule stores genetic information in most living organisms?",
+      "choices": {
+        "A": "RNA",
+        "B": "DNA",
+        "C": "Protein",
+        "D": "Lipid"
+      },
+      "correct_answer": "B",
+      "explanation": "Deoxyribonucleic acid (DNA) is the main genetic storage material.",
+      "cost": 8e-05,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "8e556936-d67c-44c4-825a-565107ad308c",
+      "question": "In Mendel's experiments, what is the term for a variant form of a gene?",
+      "choices": {
+        "A": "Locus",
+        "B": "Allele",
+        "C": "Genotype",
+        "D": "Phenotype"
+      },
+      "correct_answer": "B",
+      "explanation": "Alleles are alternative forms of the same gene.",
+      "cost": 8e-05,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "f897c54b-e996-43a4-bfc7-0d5854782013",
+      "question": "Which ecological level contains both biotic and abiotic components?",
+      "choices": {
+        "A": "Population",
+        "B": "Community",
+        "C": "Ecosystem",
+        "D": "Species"
       },
       "correct_answer": "C",
-      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and lipid synthesis occurs in the endoplasmic reticulum.",
-      "cost": 0.00017724,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "cc77aae8-332b-4d5a-a5a8-a759a92d16cc",
-      "question": "Which of the following processes occurs in the mitochondria of eukaryotic cells?",
-      "choices": {
-        "A": "Photosynthesis",
-        "B": "Cellular respiration",
-        "C": "Protein synthesis",
-        "D": "DNA replication"
-      },
-      "correct_answer": "B",
-      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and DNA replication occurs in the nucleus.",
-      "cost": 0.00018298,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "a249de97-4def-48a5-99d4-6d610c5fb8f6",
-      "question": "Which of the following processes occurs in the mitochondria?",
-      "choices": {
-        "A": "Photosynthesis",
-        "B": "Cellular respiration",
-        "C": "Protein synthesis",
-        "D": "Lipid synthesis"
-      },
-      "correct_answer": "B",
-      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and lipid synthesis occurs in the endoplasmic reticulum.",
-      "cost": 0.00018004000000000002,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "bd37d119-0c60-4f67-b036-58787b7c707e",
-      "question": "Which of the following processes occurs in the mitochondria?",
-      "choices": {
-        "A": "Photosynthesis",
-        "B": "Cellular respiration",
-        "C": "Protein synthesis",
-        "D": "DNA replication"
-      },
-      "correct_answer": "B",
-      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and DNA replication occurs in the nucleus.",
-      "cost": 0.00017808,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "7116da83-6de6-488f-be09-7f8ebf9319ba",
-      "question": "Which of the following is the primary function of the mitochondria in a eukaryotic cell?",
-      "choices": {
-        "A": "Protein synthesis",
-        "B": "Energy production through cellular respiration",
-        "C": "Lipid synthesis",
-        "D": "Storage of genetic material"
-      },
-      "correct_answer": "B",
-      "explanation": "Mitochondria are known as the powerhouses of the cell because they generate most of the cell's ATP through cellular respiration. Protein synthesis occurs in ribosomes, lipid synthesis in the endoplasmic reticulum, and genetic material is stored in the nucleus.",
-      "cost": 0.00018508,
+      "explanation": "An ecosystem includes all living organisms in a given area along with their physical environment.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     }

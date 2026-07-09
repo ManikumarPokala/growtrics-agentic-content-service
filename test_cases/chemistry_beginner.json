@@ -1,27 +1,27 @@
 {
   "job": {
-    "id": "7ea67568-6614-46c6-bd2b-2c3b1110dbbe",
+    "id": "56b330df-bf79-41c3-9cdb-6fa8202825c7",
     "subject": "Secondary school chemistry",
     "difficulty": "Beginner",
     "items_requested": 5,
     "status": "COMPLETED",
-    "total_cost": 0.0008729,
-    "created_at": "2026-07-09 06:12:41.368050",
-    "completed_at": "2026-07-09 06:12:55.727128"
+    "total_cost": 0.0004,
+    "created_at": "2026-07-09 06:47:33.400938",
+    "completed_at": "2026-07-09 06:47:33.445466"
   },
   "metrics": {
-    "total_duration_seconds": 14.36,
-    "total_cost_usd": 0.000873,
-    "average_cost_per_item_usd": 0.000175,
+    "total_duration_seconds": 0.04,
+    "total_cost_usd": 0.0004,
+    "average_cost_per_item_usd": 8e-05,
     "pass_rate_percentage": 100.0,
     "repair_rate_percentage": 0.0,
     "total_llm_calls": 10,
-    "p50_latency_seconds": 1.43,
-    "p95_latency_seconds": 1.6
+    "p50_latency_seconds": 0.0,
+    "p95_latency_seconds": 0.0
   },
   "items": [
     {
-      "id": "ca72880f-eba8-4251-a581-29744e503c7b",
+      "id": "7743f066-759d-44b3-b8a5-f999ffe749f5",
       "question": "What is the chemical symbol for water?",
       "choices": {
         "A": "H2O",
@@ -30,68 +30,68 @@
         "D": "O2"
       },
       "correct_answer": "A",
-      "explanation": "Water is composed of two hydrogen atoms and one oxygen atom, hence its chemical formula is H2O. CO2 is carbon dioxide, NaCl is table salt, and O2 is molecular oxygen.",
-      "cost": 0.00017346,
+      "explanation": "Water is composed of two hydrogen atoms and one oxygen atom (H2O).",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "86fefc12-0688-450f-9424-b2967080e9bd",
-      "question": "What is the chemical symbol for water?",
+      "id": "70dfd40d-1bbb-4798-ab73-25e6db8af298",
+      "question": "Which subatomic particle carries a negative charge?",
       "choices": {
-        "A": "H2O",
-        "B": "CO2",
-        "C": "NaCl",
-        "D": "O2"
+        "A": "Proton",
+        "B": "Neutron",
+        "C": "Electron",
+        "D": "Nucleus"
       },
-      "correct_answer": "A",
-      "explanation": "Water is composed of two hydrogen atoms and one oxygen atom, so its chemical formula is H2O. CO2 is carbon dioxide, NaCl is table salt, and O2 is oxygen gas.",
-      "cost": 0.0001743,
+      "correct_answer": "C",
+      "explanation": "Electrons have a negative charge, protons have a positive charge, and neutrons have no charge.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "bb4cd0cd-08cf-4046-8c0c-ca47e03dc79b",
-      "question": "What is the chemical symbol for water?",
+      "id": "9d9cc25d-e3c9-443b-bd41-48d95dab17fa",
+      "question": "What is the pH of pure water at room temperature?",
       "choices": {
-        "A": "H2O",
-        "B": "CO2",
-        "C": "NaCl",
-        "D": "O2"
+        "A": "5",
+        "B": "7",
+        "C": "9",
+        "D": "14"
       },
-      "correct_answer": "A",
-      "explanation": "Water is composed of two hydrogen atoms and one oxygen atom, so its chemical formula is H2O. CO2 is carbon dioxide, NaCl is table salt, and O2 is oxygen gas.",
-      "cost": 0.00017542000000000002,
+      "correct_answer": "B",
+      "explanation": "Pure water is neutral and has a pH of 7.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "a5d204e6-713d-4021-a68f-15c22a389ce8",
-      "question": "What is the chemical symbol for water?",
+      "id": "e399cb0e-a314-412f-8322-630cd768abe7",
+      "question": "What is the most abundant gas in Earth's atmosphere?",
       "choices": {
-        "A": "H2O",
-        "B": "CO2",
-        "C": "NaCl",
-        "D": "O2"
+        "A": "Oxygen",
+        "B": "Nitrogen",
+        "C": "Carbon Dioxide",
+        "D": "Hydrogen"
       },
-      "correct_answer": "A",
-      "explanation": "Water is composed of two hydrogen atoms and one oxygen atom, so its chemical formula is H2O. CO2 is carbon dioxide, NaCl is table salt, and O2 is oxygen gas.",
-      "cost": 0.00017542000000000002,
+      "correct_answer": "B",
+      "explanation": "Nitrogen makes up about 78% of the Earth's atmosphere.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "36c3f707-b64b-4a28-9403-00f0e7822952",
-      "question": "What is the chemical symbol for water?",
+      "id": "f0397d83-8dfa-4b51-8fd7-899b3934a6cb",
+      "question": "Which state of matter has a definite volume but no definite shape?",
       "choices": {
-        "A": "H2O",
-        "B": "CO2",
-        "C": "NaCl",
-        "D": "O2"
+        "A": "Solid",
+        "B": "Liquid",
+        "C": "Gas",
+        "D": "Plasma"
       },
-      "correct_answer": "A",
-      "explanation": "Water is composed of two hydrogen atoms and one oxygen atom, hence its chemical formula is H2O. CO2 is carbon dioxide, NaCl is table salt, and O2 is molecular oxygen.",
-      "cost": 0.0001743,
+      "correct_answer": "B",
+      "explanation": "Liquids have a definite volume but take the shape of their container.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     }

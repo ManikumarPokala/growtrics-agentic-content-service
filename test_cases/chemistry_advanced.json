@@ -1,97 +1,97 @@
 {
   "job": {
-    "id": "145fedb9-3407-451c-989e-97e10007fde0",
+    "id": "3fe117f4-1d87-4ae8-beae-3ab10a6a81ea",
     "subject": "Secondary school chemistry",
     "difficulty": "Advanced",
     "items_requested": 5,
     "status": "COMPLETED",
-    "total_cost": 0.0010760400000000001,
-    "created_at": "2026-07-09 06:12:57.409619",
-    "completed_at": "2026-07-09 06:13:18.135210"
+    "total_cost": 0.0004,
+    "created_at": "2026-07-09 06:47:33.912170",
+    "completed_at": "2026-07-09 06:47:33.955458"
   },
   "metrics": {
-    "total_duration_seconds": 20.73,
-    "total_cost_usd": 0.001076,
-    "average_cost_per_item_usd": 0.000215,
+    "total_duration_seconds": 0.04,
+    "total_cost_usd": 0.0004,
+    "average_cost_per_item_usd": 8e-05,
     "pass_rate_percentage": 100.0,
     "repair_rate_percentage": 0.0,
     "total_llm_calls": 10,
-    "p50_latency_seconds": 2.03,
-    "p95_latency_seconds": 2.85
+    "p50_latency_seconds": 0.0,
+    "p95_latency_seconds": 0.0
   },
   "items": [
     {
-      "id": "b7c0f4ba-91f4-4882-8e7c-c6d9e67b306f",
-      "question": "In the electrolysis of aqueous copper(II) sulfate using inert electrodes, which of the following statements is correct?",
+      "id": "aec5a2cb-e703-4e9e-9aca-6ec11bac59fe",
+      "question": "What is the molecular geometry of sulfur hexafluoride (SF6)?",
       "choices": {
-        "A": "The concentration of copper(II) ions in the solution remains constant.",
-        "B": "The pH of the solution decreases.",
-        "C": "Oxygen gas is produced at the cathode.",
-        "D": "The mass of the anode increases."
+        "A": "Tetrahedral",
+        "B": "Octahedral",
+        "C": "Trigonal bipyramidal",
+        "D": "Linear"
       },
       "correct_answer": "B",
-      "explanation": "During electrolysis of aqueous CuSO4 with inert electrodes, at the anode, water is oxidized to oxygen gas and H+ ions, increasing acidity (pH decreases). At the cathode, Cu2+ ions are reduced to copper metal, decreasing Cu2+ concentration. The anode is inert, so its mass does not change. Thus, only B is correct.",
-      "cost": 0.00020468,
+      "explanation": "SF6 has six bonding pairs around the sulfur atom, resulting in an octahedral geometry.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "726cf2d1-5d98-4004-b1af-f31ede3d7017",
-      "question": "In the electrolysis of aqueous copper(II) sulfate using inert electrodes, which species is oxidized at the anode?",
+      "id": "1dd40078-a3c6-4a29-ac29-987381fffb6a",
+      "question": "Which equation represents the relation between free energy, enthalpy, and entropy?",
       "choices": {
-        "A": "Cu(s)",
-        "B": "H2O(l)",
-        "C": "SO4^2-(aq)",
-        "D": "OH-(aq)"
-      },
-      "correct_answer": "B",
-      "explanation": "During electrolysis of aqueous CuSO4, at the anode, water is oxidized to oxygen gas because the sulfate ion is not easily oxidized (it has a high oxidation potential). The half-reaction is 2H2O \u2192 O2 + 4H+ + 4e-. Option A (Cu) is reduced at the cathode, not oxidized. Option C (SO4^2-) is not oxidized under these conditions. Option D (OH-) is present in low concentration from water autoionization, but water itself is the primary species oxidized.",
-      "cost": 0.0002247,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "fce742c4-5004-4feb-be83-e844a801f3da",
-      "question": "In the electrolysis of a concentrated aqueous solution of sodium chloride using inert electrodes, which species is oxidized at the anode?",
-      "choices": {
-        "A": "Chloride ions (Cl\u207b)",
-        "B": "Water molecules (H\u2082O)",
-        "C": "Sodium ions (Na\u207a)",
-        "D": "Hydroxide ions (OH\u207b)"
+        "A": "G = H - TS",
+        "B": "G = H + TS",
+        "C": "G = T + HS",
+        "D": "G = S - TH"
       },
       "correct_answer": "A",
-      "explanation": "In concentrated NaCl solution, chloride ions are present in high concentration. At the anode, oxidation occurs, and chloride ions are preferentially oxidized to chlorine gas because the overpotential for oxygen evolution from water is higher, making chloride oxidation more favorable. Water oxidation to oxygen is less likely under these conditions. Sodium ions are not oxidized as they are very stable, and hydroxide ions are present in low concentration in neutral solution.",
-      "cost": 0.00021700000000000002,
+      "explanation": "Gibbs free energy change is given by \u0394G = \u0394H - T\u0394S.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "d6eb511b-f281-4184-967e-1b42e0b79b4c",
-      "question": "Which of the following statements best explains why the first ionization energy of nitrogen is higher than that of oxygen?",
+      "id": "c2cd6551-8688-427e-a653-63f41828d8ae",
+      "question": "What is the hybridisation of the carbon atom in ethyne (C2H2)?",
       "choices": {
-        "A": "Nitrogen has a higher nuclear charge than oxygen.",
-        "B": "Nitrogen has a half-filled 2p subshell, which provides extra stability.",
-        "C": "Oxygen has a smaller atomic radius than nitrogen.",
-        "D": "Nitrogen has a lower electron affinity than oxygen."
-      },
-      "correct_answer": "B",
-      "explanation": "The first ionization energy of nitrogen is higher than that of oxygen because nitrogen has a half-filled 2p subshell (2p\u00b3), which is more stable due to exchange energy and reduced electron-electron repulsion. Oxygen has one more electron in the 2p subshell (2p\u2074), leading to pairing and increased repulsion, making it easier to remove an electron. Option A is incorrect because oxygen has a higher nuclear charge (8 vs 7). Option C is false; oxygen has a smaller atomic radius due to higher effective nuclear charge. Option D is irrelevant to ionization energy.",
-      "cost": 0.00023296000000000005,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "a15b377e-5bf5-462c-b3a4-77760927129f",
-      "question": "In the electrolysis of concentrated aqueous sodium chloride using inert electrodes, which of the following is the primary product at the anode?",
-      "choices": {
-        "A": "Chlorine gas",
-        "B": "Oxygen gas",
-        "C": "Sodium metal",
-        "D": "Hydrogen gas"
+        "A": "sp",
+        "B": "sp2",
+        "C": "sp3",
+        "D": "dsp2"
       },
       "correct_answer": "A",
-      "explanation": "In concentrated aqueous NaCl, chloride ions are present in high concentration and are preferentially oxidized over water at the anode, producing chlorine gas. Oxygen gas would be produced if the solution were dilute. Sodium metal is not produced because water is reduced at the cathode instead of sodium ions. Hydrogen gas is produced at the cathode, not the anode.",
-      "cost": 0.0001967,
+      "explanation": "Ethyne has a triple bond between carbons, representing sp hybridisation.",
+      "cost": 8e-05,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "cd63a8da-413f-431b-a27c-2283b0038a18",
+      "question": "Which law states that the rate of a chemical reaction is proportional to the active masses of reacting substances?",
+      "choices": {
+        "A": "Law of Mass Action",
+        "B": "Le Chatelier's Principle",
+        "C": "Henry's Law",
+        "D": "Raoult's Law"
+      },
+      "correct_answer": "A",
+      "explanation": "The Law of Mass Action states that reaction rate is proportional to active masses.",
+      "cost": 8e-05,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "8e335f22-1c46-4d58-86f4-9854451179e8",
+      "question": "What is the coordination number of the cobalt ion in [Co(NH3)6]Cl3?",
+      "choices": {
+        "A": "3",
+        "B": "4",
+        "C": "6",
+        "D": "9"
+      },
+      "correct_answer": "C",
+      "explanation": "There are six amine ligands coordinated directly to the cobalt central atom.",
+      "cost": 8e-05,
       "status": "VALIDATED",
       "attempts": 1
     }
