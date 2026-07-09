@@ -1,97 +1,97 @@
 {
   "job": {
-    "id": "e0e84d4b-70c8-472e-8ab8-109ef7e67f02",
+    "id": "145fedb9-3407-451c-989e-97e10007fde0",
     "subject": "Secondary school chemistry",
     "difficulty": "Advanced",
     "items_requested": 5,
     "status": "COMPLETED",
-    "total_cost": 0.00192,
-    "created_at": "2026-07-09 00:41:00",
-    "completed_at": "2026-07-09 00:41:18"
+    "total_cost": 0.0010760400000000001,
+    "created_at": "2026-07-09 06:12:57.409619",
+    "completed_at": "2026-07-09 06:13:18.135210"
   },
   "metrics": {
-    "total_duration_seconds": 18.5,
-    "total_cost_usd": 0.00192,
-    "average_cost_per_item_usd": 0.000384,
+    "total_duration_seconds": 20.73,
+    "total_cost_usd": 0.001076,
+    "average_cost_per_item_usd": 0.000215,
     "pass_rate_percentage": 100.0,
     "repair_rate_percentage": 0.0,
     "total_llm_calls": 10,
-    "p50_latency_seconds": 1.65,
-    "p95_latency_seconds": 2.45
+    "p50_latency_seconds": 2.03,
+    "p95_latency_seconds": 2.85
   },
   "items": [
     {
-      "id": "f6a7b8c9-d0e1-2f3a-4b5c-6d7e8f9a0b1c",
-      "question": "What is the principal reason why chemical equilibrium constants change with temperature?",
+      "id": "b7c0f4ba-91f4-4882-8e7c-c6d9e67b306f",
+      "question": "In the electrolysis of aqueous copper(II) sulfate using inert electrodes, which of the following statements is correct?",
       "choices": {
-        "A": "It alters the activation energy of the forward reaction only",
-        "B": "It shifts the system towards the endothermic reaction direction to absorb heat",
-        "C": "It changes the rate constants of forward and reverse reactions by different factors depending on enthalpy",
-        "D": "It increases collision frequency of reactant molecules exclusively"
-      },
-      "correct_answer": "C",
-      "explanation": "According to the Van 't Hoff equation, the temperature dependency of the equilibrium constant is determined by the standard enthalpy change of the reaction, which affects forward and reverse rate constants disproportionately.",
-      "cost": 0.00038,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "a7b8c9d0-e1f2-3a4b-5c6d-7e8f9a0b1c2d",
-      "question": "Which of the following describes the behavior of a buffer solution when a small amount of strong base is added?",
-      "choices": {
-        "A": "The weak base in the buffer reacts with the added hydroxide ions, raising pH significantly",
-        "B": "The weak acid in the buffer reacts with the added hydroxide ions, neutralizing them and keeping pH stable",
-        "C": "Water molecules dissociate to neutralize the added hydroxide ions directly",
-        "D": "The salt of the weak acid precipitates to reduce ionic strength"
+        "A": "The concentration of copper(II) ions in the solution remains constant.",
+        "B": "The pH of the solution decreases.",
+        "C": "Oxygen gas is produced at the cathode.",
+        "D": "The mass of the anode increases."
       },
       "correct_answer": "B",
-      "explanation": "A buffer consists of a weak acid and its conjugate base. Added strong base (OH-) is neutralized by the weak acid component (HA), forming water and conjugate base (A-), preventing a significant pH shift.",
-      "cost": 0.00039,
+      "explanation": "During electrolysis of aqueous CuSO4 with inert electrodes, at the anode, water is oxidized to oxygen gas and H+ ions, increasing acidity (pH decreases). At the cathode, Cu2+ ions are reduced to copper metal, decreasing Cu2+ concentration. The anode is inert, so its mass does not change. Thus, only B is correct.",
+      "cost": 0.00020468,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "b8c9d0e1-f2a3-4b5c-6d7e-8f9a0b1c2d3e",
-      "question": "In the electrolysis of aqueous CuSO4 using inert platinum electrodes, what reaction occurs at the anode?",
+      "id": "726cf2d1-5d98-4004-b1af-f31ede3d7017",
+      "question": "In the electrolysis of aqueous copper(II) sulfate using inert electrodes, which species is oxidized at the anode?",
       "choices": {
-        "A": "Copper metal is deposited: Cu2+ + 2e- -> Cu",
-        "B": "Oxygen gas is evolved: 2H2O -> O2 + 4H+ + 4e-",
-        "C": "Hydrogen gas is evolved: 2H+ + 2e- -> H2",
-        "D": "Sulfate ions are oxidized: 2SO42- -> S2O82- + 2e-"
+        "A": "Cu(s)",
+        "B": "H2O(l)",
+        "C": "SO4^2-(aq)",
+        "D": "OH-(aq)"
       },
       "correct_answer": "B",
-      "explanation": "At the anode, oxidation occurs. Water is oxidized to release oxygen gas because water has a lower oxidation potential than sulfate ions in aqueous solution.",
-      "cost": 0.00041,
+      "explanation": "During electrolysis of aqueous CuSO4, at the anode, water is oxidized to oxygen gas because the sulfate ion is not easily oxidized (it has a high oxidation potential). The half-reaction is 2H2O \u2192 O2 + 4H+ + 4e-. Option A (Cu) is reduced at the cathode, not oxidized. Option C (SO4^2-) is not oxidized under these conditions. Option D (OH-) is present in low concentration from water autoionization, but water itself is the primary species oxidized.",
+      "cost": 0.0002247,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "c9d0e1f2-a3b4-5c6d-7e8f-9a0b1c2d3e4f",
-      "question": "According to the second law of thermodynamics, what condition must be met for a chemical reaction to be spontaneous at constant temperature and pressure?",
+      "id": "fce742c4-5004-4feb-be83-e844a801f3da",
+      "question": "In the electrolysis of a concentrated aqueous solution of sodium chloride using inert electrodes, which species is oxidized at the anode?",
       "choices": {
-        "A": "The change in entropy of the system must be positive (dS_sys > 0)",
-        "B": "The change in enthalpy of the system must be negative (dH_sys < 0)",
-        "C": "The change in Gibbs free energy of the system must be negative (dG_sys < 0)",
-        "D": "The total heat transfer of the system must equal zero (q = 0)"
-      },
-      "correct_answer": "C",
-      "explanation": "For a reaction to be spontaneous at constant temperature and pressure, the change in Gibbs free energy (dG = dH - TdS) must be negative, which corresponds to an increase in the total entropy of the universe.",
-      "cost": 0.00037,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "d0e1f2a3-b4c5-6d7e-8f9a-0b1c2d3e4f5a",
-      "question": "What is the orbital hybridization of carbon in carbon dioxide (CO2)?",
-      "choices": {
-        "A": "sp",
-        "B": "sp2",
-        "C": "sp3",
-        "D": "dsp2"
+        "A": "Chloride ions (Cl\u207b)",
+        "B": "Water molecules (H\u2082O)",
+        "C": "Sodium ions (Na\u207a)",
+        "D": "Hydroxide ions (OH\u207b)"
       },
       "correct_answer": "A",
-      "explanation": "In CO2, carbon forms two double bonds (one with each oxygen atom) and has zero lone pairs. This linear geometry corresponds to sp hybridization.",
-      "cost": 0.00037,
+      "explanation": "In concentrated NaCl solution, chloride ions are present in high concentration. At the anode, oxidation occurs, and chloride ions are preferentially oxidized to chlorine gas because the overpotential for oxygen evolution from water is higher, making chloride oxidation more favorable. Water oxidation to oxygen is less likely under these conditions. Sodium ions are not oxidized as they are very stable, and hydroxide ions are present in low concentration in neutral solution.",
+      "cost": 0.00021700000000000002,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "d6eb511b-f281-4184-967e-1b42e0b79b4c",
+      "question": "Which of the following statements best explains why the first ionization energy of nitrogen is higher than that of oxygen?",
+      "choices": {
+        "A": "Nitrogen has a higher nuclear charge than oxygen.",
+        "B": "Nitrogen has a half-filled 2p subshell, which provides extra stability.",
+        "C": "Oxygen has a smaller atomic radius than nitrogen.",
+        "D": "Nitrogen has a lower electron affinity than oxygen."
+      },
+      "correct_answer": "B",
+      "explanation": "The first ionization energy of nitrogen is higher than that of oxygen because nitrogen has a half-filled 2p subshell (2p\u00b3), which is more stable due to exchange energy and reduced electron-electron repulsion. Oxygen has one more electron in the 2p subshell (2p\u2074), leading to pairing and increased repulsion, making it easier to remove an electron. Option A is incorrect because oxygen has a higher nuclear charge (8 vs 7). Option C is false; oxygen has a smaller atomic radius due to higher effective nuclear charge. Option D is irrelevant to ionization energy.",
+      "cost": 0.00023296000000000005,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "a15b377e-5bf5-462c-b3a4-77760927129f",
+      "question": "In the electrolysis of concentrated aqueous sodium chloride using inert electrodes, which of the following is the primary product at the anode?",
+      "choices": {
+        "A": "Chlorine gas",
+        "B": "Oxygen gas",
+        "C": "Sodium metal",
+        "D": "Hydrogen gas"
+      },
+      "correct_answer": "A",
+      "explanation": "In concentrated aqueous NaCl, chloride ions are present in high concentration and are preferentially oxidized over water at the anode, producing chlorine gas. Oxygen gas would be produced if the solution were dilute. Sodium metal is not produced because water is reduced at the cathode instead of sodium ions. Hydrogen gas is produced at the cathode, not the anode.",
+      "cost": 0.0001967,
       "status": "VALIDATED",
       "attempts": 1
     }

@@ -1,97 +1,97 @@
 {
   "job": {
-    "id": "e0e84d4b-70c8-472e-8ab8-109ef7e67f03",
+    "id": "b03ab20e-ca27-421d-a845-df1884c579e6",
     "subject": "Secondary school biology",
     "difficulty": "Intermediate",
     "items_requested": 5,
     "status": "COMPLETED",
-    "total_cost": 0.00178,
-    "created_at": "2026-07-09 00:42:00",
-    "completed_at": "2026-07-09 00:42:17"
+    "total_cost": 0.00090342,
+    "created_at": "2026-07-09 06:13:19.446986",
+    "completed_at": "2026-07-09 06:13:35.148735"
   },
   "metrics": {
-    "total_duration_seconds": 17.1,
-    "total_cost_usd": 0.00178,
-    "average_cost_per_item_usd": 0.000356,
+    "total_duration_seconds": 15.7,
+    "total_cost_usd": 0.000903,
+    "average_cost_per_item_usd": 0.000181,
     "pass_rate_percentage": 100.0,
     "repair_rate_percentage": 0.0,
     "total_llm_calls": 10,
-    "p50_latency_seconds": 1.45,
-    "p95_latency_seconds": 2.25
+    "p50_latency_seconds": 1.58,
+    "p95_latency_seconds": 1.76
   },
   "items": [
     {
-      "id": "e1f2a3b4-c5d6-7e8f-9a0b-1c2d3e4f5a6b",
-      "question": "What is the primary role of chlorophyll during photosynthesis?",
+      "id": "0d0809a0-efa4-4a6f-9057-5f14738cab4e",
+      "question": "Which of the following processes occurs in the mitochondria?",
       "choices": {
-        "A": "It converts carbon dioxide into glucose directly",
-        "B": "It absorbs light energy and excites electrons to power the light-dependent reactions",
-        "C": "It acts as an enzyme to split water molecules during photolysis",
-        "D": "It stores oxygen gas inside the chloroplast"
-      },
-      "correct_answer": "B",
-      "explanation": "Chlorophyll pigments absorb solar energy (primarily blue and red light), which excites electrons that are passed down the electron transport chain to generate ATP and NADPH for the Calvin cycle.",
-      "cost": 0.00036,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "f2a3b4c5-d6e7-8f9a-0b1c-2d3e4f5a6b7c",
-      "question": "If a plant heterozygous for purple flowers (Pp) is crossed with a plant homozygous for white flowers (pp), what is the expected phenotypic ratio of the offspring?",
-      "choices": {
-        "A": "All purple",
-        "B": "3 purple : 1 white",
-        "C": "1 purple : 1 white",
-        "D": "1 purple : 3 white"
+        "A": "Photosynthesis",
+        "B": "Protein synthesis",
+        "C": "Cellular respiration",
+        "D": "Lipid synthesis"
       },
       "correct_answer": "C",
-      "explanation": "Crossing Pp (heterozygous purple) with pp (homozygous white) yields Pp (purple) and pp (white) in a 1:1 genotype and phenotype ratio (50% purple, 50% white).",
-      "cost": 0.00035,
+      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and lipid synthesis occurs in the endoplasmic reticulum.",
+      "cost": 0.00017724,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "a3b4c5d6-e7f8-9a0b-1c2d-3e4f5a6b7c8d",
-      "question": "Which of the following blood vessels carries oxygenated blood from the lungs back to the left atrium of the heart?",
+      "id": "cc77aae8-332b-4d5a-a5a8-a759a92d16cc",
+      "question": "Which of the following processes occurs in the mitochondria of eukaryotic cells?",
       "choices": {
-        "A": "Pulmonary artery",
-        "B": "Pulmonary vein",
-        "C": "Vena cava",
-        "D": "Aorta"
+        "A": "Photosynthesis",
+        "B": "Cellular respiration",
+        "C": "Protein synthesis",
+        "D": "DNA replication"
       },
       "correct_answer": "B",
-      "explanation": "The pulmonary vein is unique because it carries freshly oxygenated blood from the lungs into the left atrium of the heart. The pulmonary artery, conversely, carries deoxygenated blood to the lungs.",
-      "cost": 0.00036,
+      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and DNA replication occurs in the nucleus.",
+      "cost": 0.00018298,
       "status": "VALIDATED",
       "attempts": 1
     },
     {
-      "id": "b4c5d6e7-f8a9-0b1c-2d3e-4f5a6b7c8d9e",
-      "question": "What is the cellular site where glycolysis takes place?",
+      "id": "a249de97-4def-48a5-99d4-6d610c5fb8f6",
+      "question": "Which of the following processes occurs in the mitochondria?",
       "choices": {
-        "A": "Mitochondrial matrix",
-        "B": "Inner mitochondrial membrane",
-        "C": "Cytoplasm",
-        "D": "Ribosome"
-      },
-      "correct_answer": "C",
-      "explanation": "Glycolysis, the anaerobic breakdown of glucose into pyruvate, occurs entirely in the cytoplasm of the cell. The subsequent steps (Krebs cycle and ETC) occur inside the mitochondria.",
-      "cost": 0.00034,
-      "status": "VALIDATED",
-      "attempts": 1
-    },
-    {
-      "id": "c5d6e7f8-a9b0-1c2d-3e4f-5a6b7c8d9e0f",
-      "question": "What ecological term describes the role or position of a species within its ecosystem?",
-      "choices": {
-        "A": "Habitat",
-        "B": "Niche",
-        "C": "Biome",
-        "D": "Trophic level"
+        "A": "Photosynthesis",
+        "B": "Cellular respiration",
+        "C": "Protein synthesis",
+        "D": "Lipid synthesis"
       },
       "correct_answer": "B",
-      "explanation": "A niche describes how an organism fits into its ecosystem, including its habitat, food resources, behaviors, and interactions with other species.",
-      "cost": 0.00037,
+      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and lipid synthesis occurs in the endoplasmic reticulum.",
+      "cost": 0.00018004000000000002,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "bd37d119-0c60-4f67-b036-58787b7c707e",
+      "question": "Which of the following processes occurs in the mitochondria?",
+      "choices": {
+        "A": "Photosynthesis",
+        "B": "Cellular respiration",
+        "C": "Protein synthesis",
+        "D": "DNA replication"
+      },
+      "correct_answer": "B",
+      "explanation": "Cellular respiration occurs in the mitochondria, where glucose is broken down to produce ATP. Photosynthesis occurs in chloroplasts, protein synthesis occurs on ribosomes, and DNA replication occurs in the nucleus.",
+      "cost": 0.00017808,
+      "status": "VALIDATED",
+      "attempts": 1
+    },
+    {
+      "id": "7116da83-6de6-488f-be09-7f8ebf9319ba",
+      "question": "Which of the following is the primary function of the mitochondria in a eukaryotic cell?",
+      "choices": {
+        "A": "Protein synthesis",
+        "B": "Energy production through cellular respiration",
+        "C": "Lipid synthesis",
+        "D": "Storage of genetic material"
+      },
+      "correct_answer": "B",
+      "explanation": "Mitochondria are known as the powerhouses of the cell because they generate most of the cell's ATP through cellular respiration. Protein synthesis occurs in ribosomes, lipid synthesis in the endoplasmic reticulum, and genetic material is stored in the nucleus.",
+      "cost": 0.00018508,
       "status": "VALIDATED",
       "attempts": 1
     }
