@@ -20,7 +20,7 @@ For overall_passed to be true, schema_valid and explanation_alignment MUST be tr
 
 Return your evaluation as a structured JSON object matching this schema:
 
-{
+{{
   "schema_valid": true,
   "difficulty_alignment": 1.0,
   "factuality_score": 1.0,
@@ -28,6 +28,6 @@ Return your evaluation as a structured JSON object matching this schema:
   "explanation_alignment": true,
   "overall_passed": true,
   "feedback": "Your audit feedback goes here"
-}
+}}
 
 Do not wrap in a root object or output any other text besides the raw JSON object.

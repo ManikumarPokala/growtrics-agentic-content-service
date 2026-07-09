@@ -18,16 +18,16 @@ Follow these instructions to repair the item:
 3. Ensure there are exactly 4 choices (A, B, C, D) and correct_answer points to one of them.
 4. Output the repaired question strictly matching this JSON schema:
 
-{
+{{
   "question": "The question text",
-  "choices": {
+  "choices": {{
     "A": "Choice A text",
     "B": "Choice B text",
     "C": "Choice C text",
     "D": "Choice D text"
-  },
+  }},
   "correct_answer": "A",
   "explanation": "Short pedagogical explanation"
-}
+}}
 
-Do not wrap in a root object like "question: { ... }" or output any other text besides the raw JSON object.
+Do not wrap in a root object like "question: {{ ... }}" or output any other text besides the raw JSON object.
