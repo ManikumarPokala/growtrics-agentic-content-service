@@ -68,7 +68,7 @@ class SQLAlchemyJobRepository(JobRepository):
             stmt = (
                 update(JobModel)
                 .where(JobModel.id == job_id)
-                .values(status=status.value, error_message=error_message, updated_at=datetime.datetime.utcnow())
+                .values(status=status.value, error_message=error_message, updated_at=datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None))
             )
             await session.execute(stmt)
             await session.commit()
@@ -78,7 +78,7 @@ class SQLAlchemyJobRepository(JobRepository):
             stmt = (
                 update(JobModel)
                 .where(JobModel.id == job_id)
-                .values(total_cost=total_cost, updated_at=datetime.datetime.utcnow())
+                .values(total_cost=total_cost, updated_at=datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None))
             )
             await session.execute(stmt)
             await session.commit()
@@ -88,7 +88,7 @@ class SQLAlchemyJobRepository(JobRepository):
             stmt = (
                 update(JobModel)
                 .where(JobModel.id == job_id)
-                .values(updated_at=datetime.datetime.utcnow())
+                .values(updated_at=datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None))
             )
             await session.execute(stmt)
             await session.commit()

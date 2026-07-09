@@ -77,7 +77,7 @@ class BackgroundQueueWorker:
         """
         logger.info("Running crash recovery manager...")
         uncompleted_jobs = await self.job_repo.get_uncompleted_jobs()
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
         
         for job in uncompleted_jobs:
             job_id = job["id"]

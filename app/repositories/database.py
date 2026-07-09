@@ -5,6 +5,9 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from app.core.config import settings
 
+def utc_now_naive() -> datetime.datetime:
+    return datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+
 class Base(DeclarativeBase):
     pass
 
@@ -20,8 +23,8 @@ class JobModel(Base):
     error_message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     idempotency_key: Mapped[Optional[str]] = mapped_column(String(255), nullable=True, unique=True)
     request_hash: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)
-    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=datetime.datetime.utcnow)
-    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utc_now_naive)
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utc_now_naive, onupdate=utc_now_naive)
 
 class ItemModel(Base):
     __tablename__ = "items"
@@ -35,8 +38,8 @@ class ItemModel(Base):
     cost: Mapped[float] = mapped_column(Float, default=0.0)
     status: Mapped[str] = mapped_column(String(50), default="PENDING")
     attempts: Mapped[int] = mapped_column(Integer, default=1)
-    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=datetime.datetime.utcnow)
-    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    created_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utc_now_naive)
+    updated_at: Mapped[datetime.datetime] = mapped_column(DateTime, default=utc_now_naive, onupdate=utc_now_naive)
 
 class JobEventModel(Base):
     __tablename__ = "job_events"
@@ -45,7 +48,7 @@ class JobEventModel(Base):
     job_id: Mapped[str] = mapped_column(String(36), ForeignKey("jobs.id", ondelete="CASCADE"), nullable=False)
     stage: Mapped[str] = mapped_column(String(50), nullable=False)
     status: Mapped[str] = mapped_column(String(50), nullable=False)
-    timestamp: Mapped[datetime.datetime] = mapped_column(DateTime, default=datetime.datetime.utcnow)
+    timestamp: Mapped[datetime.datetime] = mapped_column(DateTime, default=utc_now_naive)
     duration_ms: Mapped[int] = mapped_column(Integer, default=0)
     input_tokens: Mapped[int] = mapped_column(Integer, default=0)
     output_tokens: Mapped[int] = mapped_column(Integer, default=0)

@@ -86,7 +86,7 @@ class SQLAlchemyItemRepository(ItemRepository):
                     status=status.value,
                     attempts=attempts,
                     cost=ItemModel.cost + cost_increment,
-                    updated_at=datetime.datetime.utcnow()
+                    updated_at=datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
                 )
             )
             await session.execute(stmt)
@@ -115,7 +115,7 @@ class SQLAlchemyItemRepository(ItemRepository):
                     status=status.value,
                     attempts=attempts,
                     cost=ItemModel.cost + cost_increment,
-                    updated_at=datetime.datetime.utcnow()
+                    updated_at=datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
                 )
             )
             await session.execute(stmt)
