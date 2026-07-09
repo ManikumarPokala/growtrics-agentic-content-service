@@ -10,4 +10,18 @@ Follow these strict pedagogical requirements:
 3. Only ONE choice can be the correct answer. The other 3 choices must be plausible distractors, not obviously foolish options.
 4. The correct_answer field must be exactly the key (e.g., 'A', 'B', 'C', or 'D') corresponding to the correct option.
 5. The explanation must be a short, clear paragraph explaining why the correct choice is correct and why the distractors are wrong.
-6. The output must adhere strictly to the JSON schema provided.
+6. The output must adhere strictly to the JSON schema provided below:
+
+{
+  "question": "The question text",
+  "choices": {
+    "A": "Choice A text",
+    "B": "Choice B text",
+    "C": "Choice C text",
+    "D": "Choice D text"
+  },
+  "correct_answer": "A",
+  "explanation": "Short pedagogical explanation"
+}
+
+Do not wrap in a root object like "question: { ... }" or output any other text besides the raw JSON object.

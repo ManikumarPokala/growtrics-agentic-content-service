@@ -18,5 +18,16 @@ Evaluate against these 5 criteria:
 
 For overall_passed to be true, schema_valid and explanation_alignment MUST be true, and difficulty_alignment, factuality_score, and clarity_score MUST be >= 0.8.
 
-Return your evaluation as a structured JSON object matching the requested JudgeRubric schema.
-Provide specific details in the 'feedback' field for any scores less than 1.0 or if overall_passed is false.
+Return your evaluation as a structured JSON object matching this schema:
+
+{
+  "schema_valid": true,
+  "difficulty_alignment": 1.0,
+  "factuality_score": 1.0,
+  "clarity_score": 1.0,
+  "explanation_alignment": true,
+  "overall_passed": true,
+  "feedback": "Your audit feedback goes here"
+}
+
+Do not wrap in a root object or output any other text besides the raw JSON object.
