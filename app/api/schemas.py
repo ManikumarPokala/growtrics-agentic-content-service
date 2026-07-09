@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Dict, List, Optional
-from pydantic import BaseModel, Field, conint, constr
+from pydantic import BaseModel, Field, conint, constr, ConfigDict
 
 class JobCreateRequest(BaseModel):
     subject: constr(min_length=2, max_length=100) = Field(
@@ -27,8 +27,7 @@ class JobResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class GeneratedItemResponse(BaseModel):
     id: str
@@ -40,8 +39,7 @@ class GeneratedItemResponse(BaseModel):
     status: str
     attempts: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class JobMetricsResponse(BaseModel):
     total_duration_seconds: float
