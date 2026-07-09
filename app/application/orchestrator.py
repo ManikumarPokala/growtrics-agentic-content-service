@@ -1,6 +1,6 @@
 import time
 import asyncio
-from typing import Dict, List, Optional, Tuple, Type
+from typing import Dict, List, Optional, Tuple, Type, Any
 from pydantic import BaseModel
 from app.core.config import settings
 from app.core.exceptions import LLMProviderError, JSONParseError
@@ -67,7 +67,7 @@ class PipelineOrchestrator:
         system_prompt: str, 
         user_prompt: str, 
         response_model: Type[BaseModel]
-    ) -> Tuple[BaseModel, Dict[str, any]]:
+    ) -> Tuple[BaseModel, Dict[str, Any]]:
         """Handles provider execution with circuit-breaking fallback logic."""
         async with self.semaphore:
             provider = self._get_active_provider()

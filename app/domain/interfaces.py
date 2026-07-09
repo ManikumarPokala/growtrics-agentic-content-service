@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List, Optional, Tuple, Type
+from typing import Dict, List, Optional, Tuple, Type, Any
 from pydantic import BaseModel
 from app.domain.entities import JobStatus, ItemStatus
 
@@ -11,7 +11,7 @@ class LLMProvider(ABC):
         user_prompt: str, 
         response_model: Type[BaseModel], 
         temperature: float = 0.2
-    ) -> Tuple[BaseModel, Dict[str, any]]:
+    ) -> Tuple[BaseModel, Dict[str, Any]]:
         """
         Sends structured prompts to LLM and returns response schema + token & latency metadata.
         Returns:
@@ -26,19 +26,19 @@ class LLMProvider(ABC):
 
 class JobRepository(ABC):
     @abstractmethod
-    async def create(self, subject: str, difficulty: str, items_requested: str, idempotency_key: Optional[str] = None, request_hash: Optional[str] = None) -> Dict[str, any]:
+    async def create(self, subject: str, difficulty: str, items_requested: int, idempotency_key: Optional[str] = None, request_hash: Optional[str] = None) -> Dict[str, Any]:
         pass
 
     @abstractmethod
-    async def get_by_id(self, job_id: str) -> Optional[Dict[str, any]]:
+    async def get_by_id(self, job_id: str) -> Optional[Dict[str, Any]]:
         pass
 
     @abstractmethod
-    async def get_by_idempotency_key(self, idempotency_key: str) -> Optional[Dict[str, any]]:
+    async def get_by_idempotency_key(self, idempotency_key: str) -> Optional[Dict[str, Any]]:
         pass
 
     @abstractmethod
-    async def get_by_request_hash(self, request_hash: str) -> Optional[Dict[str, any]]:
+    async def get_by_request_hash(self, request_hash: str) -> Optional[Dict[str, Any]]:
         pass
 
     @abstractmethod
@@ -54,7 +54,7 @@ class JobRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_uncompleted_jobs(self) -> List[Dict[str, any]]:
+    async def get_uncompleted_jobs(self) -> List[Dict[str, Any]]:
         pass
 
 
@@ -70,15 +70,15 @@ class ItemRepository(ABC):
         cost: float, 
         status: ItemStatus,
         attempts: int = 1
-    ) -> Dict[str, any]:
+    ) -> Dict[str, Any]:
         pass
 
     @abstractmethod
-    async def get_by_id(self, item_id: str) -> Optional[Dict[str, any]]:
+    async def get_by_id(self, item_id: str) -> Optional[Dict[str, Any]]:
         pass
 
     @abstractmethod
-    async def get_items_by_job_id(self, job_id: str) -> List[Dict[str, any]]:
+    async def get_items_by_job_id(self, job_id: str) -> List[Dict[str, Any]]:
         pass
 
     @abstractmethod
@@ -121,5 +121,5 @@ class EventRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_events_by_job_id(self, job_id: str) -> List[Dict[str, any]]:
+    async def get_events_by_job_id(self, job_id: str) -> List[Dict[str, Any]]:
         pass

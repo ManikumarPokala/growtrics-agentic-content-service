@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from app.domain.interfaces import EventRepository
@@ -10,7 +10,7 @@ class SQLAlchemyEventRepository(EventRepository):
     def __init__(self, session_factory: async_sessionmaker[AsyncSession]):
         self.session_factory = session_factory
 
-    def _model_to_dict(self, model: JobEventModel) -> Dict[str, any]:
+    def _model_to_dict(self, model: JobEventModel) -> Dict[str, Any]:
         return {
             "id": model.id,
             "job_id": model.job_id,
@@ -53,7 +53,7 @@ class SQLAlchemyEventRepository(EventRepository):
             session.add(event)
             await session.commit()
 
-    async def get_events_by_job_id(self, job_id: str) -> List[Dict[str, any]]:
+    async def get_events_by_job_id(self, job_id: str) -> List[Dict[str, Any]]:
         async with self.session_factory() as session:
             stmt = select(JobEventModel).where(JobEventModel.job_id == job_id)
             result = await session.execute(stmt)

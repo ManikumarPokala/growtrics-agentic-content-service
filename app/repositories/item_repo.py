@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from sqlalchemy import select, update, func
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from app.domain.interfaces import ItemRepository
@@ -11,7 +11,7 @@ class SQLAlchemyItemRepository(ItemRepository):
     def __init__(self, session_factory: async_sessionmaker[AsyncSession]):
         self.session_factory = session_factory
 
-    def _model_to_dict(self, model: ItemModel) -> Dict[str, any]:
+    def _model_to_dict(self, model: ItemModel) -> Dict[str, Any]:
         return {
             "id": model.id,
             "job_id": model.job_id,
@@ -36,7 +36,7 @@ class SQLAlchemyItemRepository(ItemRepository):
         cost: float, 
         status: ItemStatus,
         attempts: int = 1
-    ) -> Dict[str, any]:
+    ) -> Dict[str, Any]:
         async with self.session_factory() as session:
             item = ItemModel(
                 id=str(uuid.uuid4()),
@@ -54,14 +54,14 @@ class SQLAlchemyItemRepository(ItemRepository):
             await session.refresh(item)
             return self._model_to_dict(item)
 
-    async def get_by_id(self, item_id: str) -> Optional[Dict[str, any]]:
+    async def get_by_id(self, item_id: str) -> Optional[Dict[str, Any]]:
         async with self.session_factory() as session:
             stmt = select(ItemModel).where(ItemModel.id == item_id)
             result = await session.execute(stmt)
             item = result.scalar_one_or_none()
             return self._model_to_dict(item) if item else None
 
-    async def get_items_by_job_id(self, job_id: str) -> List[Dict[str, any]]:
+    async def get_items_by_job_id(self, job_id: str) -> List[Dict[str, Any]]:
         async with self.session_factory() as session:
             stmt = select(ItemModel).where(ItemModel.job_id == job_id)
             result = await session.execute(stmt)

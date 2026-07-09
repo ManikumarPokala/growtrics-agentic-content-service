@@ -1,6 +1,6 @@
 import datetime
 import uuid
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from app.domain.interfaces import JobRepository
@@ -11,7 +11,7 @@ class SQLAlchemyJobRepository(JobRepository):
     def __init__(self, session_factory: async_sessionmaker[AsyncSession]):
         self.session_factory = session_factory
 
-    def _model_to_dict(self, model: JobModel) -> Dict[str, any]:
+    def _model_to_dict(self, model: JobModel) -> Dict[str, Any]:
         return {
             "id": model.id,
             "subject": model.subject,
@@ -26,7 +26,7 @@ class SQLAlchemyJobRepository(JobRepository):
             "updated_at": model.updated_at
         }
 
-    async def create(self, subject: str, difficulty: str, items_requested: int, idempotency_key: Optional[str] = None, request_hash: Optional[str] = None) -> Dict[str, any]:
+    async def create(self, subject: str, difficulty: str, items_requested: int, idempotency_key: Optional[str] = None, request_hash: Optional[str] = None) -> Dict[str, Any]:
         async with self.session_factory() as session:
             job = JobModel(
                 id=str(uuid.uuid4()),
@@ -42,21 +42,21 @@ class SQLAlchemyJobRepository(JobRepository):
             await session.refresh(job)
             return self._model_to_dict(job)
 
-    async def get_by_id(self, job_id: str) -> Optional[Dict[str, any]]:
+    async def get_by_id(self, job_id: str) -> Optional[Dict[str, Any]]:
         async with self.session_factory() as session:
             stmt = select(JobModel).where(JobModel.id == job_id)
             result = await session.execute(stmt)
             job = result.scalar_one_or_none()
             return self._model_to_dict(job) if job else None
 
-    async def get_by_idempotency_key(self, idempotency_key: str) -> Optional[Dict[str, any]]:
+    async def get_by_idempotency_key(self, idempotency_key: str) -> Optional[Dict[str, Any]]:
         async with self.session_factory() as session:
             stmt = select(JobModel).where(JobModel.idempotency_key == idempotency_key)
             result = await session.execute(stmt)
             job = result.scalar_one_or_none()
             return self._model_to_dict(job) if job else None
 
-    async def get_by_request_hash(self, request_hash: str) -> Optional[Dict[str, any]]:
+    async def get_by_request_hash(self, request_hash: str) -> Optional[Dict[str, Any]]:
         async with self.session_factory() as session:
             stmt = select(JobModel).where(JobModel.request_hash == request_hash)
             result = await session.execute(stmt)
@@ -93,7 +93,7 @@ class SQLAlchemyJobRepository(JobRepository):
             await session.execute(stmt)
             await session.commit()
 
-    async def get_uncompleted_jobs(self) -> List[Dict[str, any]]:
+    async def get_uncompleted_jobs(self) -> List[Dict[str, Any]]:
         async with self.session_factory() as session:
             stmt = select(JobModel).where(JobModel.status.in_([JobStatus.PENDING.value, JobStatus.PROCESSING.value, JobStatus.QUEUED.value]))
             result = await session.execute(stmt)
