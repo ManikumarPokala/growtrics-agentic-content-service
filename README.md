@@ -58,19 +58,22 @@ Once started, the interactive API documentation is available at:
 ## 4. API Endpoints
 
 ### 1. Submit Content Generation Job
-- **Endpoint**: `POST /api/jobs`
-- **Headers**:
-  - `Content-Type: application/json`
-  - `X-Idempotency-Key`: `uuid-or-unique-string` (Optional)
-- **Body**:
-  ```json
-  {
-    "subject": "Secondary school chemistry",
-    "difficulty": "Beginner",
-    "items_requested": 5
-  }
+* **Endpoint**: `POST /api/jobs`
+* **Headers**:
+  * `Content-Type: application/json`
+  * `X-Idempotency-Key`: `uuid-or-unique-string` (Optional)
+* **Curl Command**:
+  ```bash
+  curl -X POST http://127.0.0.1:8000/api/jobs \
+    -H "Content-Type: application/json" \
+    -H "X-Idempotency-Key: test-idempotency-123" \
+    -d '{
+      "subject": "Secondary school chemistry",
+      "difficulty": "Beginner",
+      "items_requested": 5
+    }'
   ```
-- **Response**: `202 Accepted`
+* **Response**: `202 Accepted`
   ```json
   {
     "id": "job-uuid",
@@ -85,21 +88,32 @@ Once started, the interactive API documentation is available at:
   ```
 
 ### 2. Poll Job Status
-- **Endpoint**: `GET /api/jobs/{job_id}`
-- **Response**: `200 OK`
+* **Endpoint**: `GET /api/jobs/{job_id}`
+* **Curl Command**:
+  ```bash
+  curl http://127.0.0.1:8000/api/jobs/job-uuid
+  ```
+* **Response**: `200 OK`
   ```json
   {
     "id": "job-uuid",
     "status": "PROCESSING",
     "total_cost": 0.00035,
-    ...
+    "error_message": null,
+    "created_at": "2026-07-09T00:00:00Z",
+    "updated_at": "2026-07-09T00:00:05Z"
   }
   ```
 
-### 3. Retrieve Completed Results
-- **Endpoint**: `GET /api/jobs/{job_id}/results`
-- **Response**: `200 OK`
+### 3. Retrieve Completed Results & Metrics
+* **Endpoint**: `GET /api/jobs/{job_id}/results`
+* **Curl Command**:
+  ```bash
+  curl http://127.0.0.1:8000/api/jobs/job-uuid/results
+  ```
+* **Response**: `200 OK`
   Returns the metadata of the job, detailed quality and latency metrics (including P50 and P95), and the list of verified questions.
+
 
 ---
 
